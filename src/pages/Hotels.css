@@ -1,0 +1,9 @@
+.Hotels-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+#map {
+  /* 지도 크기 */
+  height: 400px;
+}
