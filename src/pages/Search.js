@@ -112,7 +112,7 @@ const Search = () => {
 
   // 버튼 클릭시 검색
   const searchHotels = () => {
-    console.log(destinationId, checkIn, checkOut, adultsNumber);
+    // console.log(destinationId, checkIn, checkOut, adultsNumber);
     navigate("/hotels", {
       state: { destinationId, checkIn, checkOut, adultsNumber },
     });
@@ -171,7 +171,7 @@ const Search = () => {
         <Input
           name="adults-number"
           type="number"
-          placeholder="안원수"
+          placeholder="인원수"
           width="middle"
           min={1}
           max={7}
