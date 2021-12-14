@@ -21,7 +21,7 @@ const Hotels = () => {
   const [queryURL, setQueryURL] = useState(null);
 
   useEffect(async () => {
-    const { results, filters } = await getHotels();
+    const { results, filters } = await getHotels(BASE_URL);
     setHotels(results);
     setFilters(filters);
 
@@ -33,12 +33,12 @@ const Hotels = () => {
   useEffect(async () => {
     let url = BASE_URL;
 
-    console.log(url);
+    // console.log(url);
     // queryURL[prop] : [23, 30, 2] - 필터 조건들이 들어가 있는 배열
     for (let prop in queryURL) {
       const queryvalue = encodeURIComponent(queryURL[prop].join(","));
       url += `&${prop}=${queryvalue}`;
-      console.log(prop, queryvalue);
+      // console.log(prop, queryvalue);
     }
     const { results } = await getHotels(url);
     setHotels(results);
@@ -46,15 +46,13 @@ const Hotels = () => {
 
   const getHotels = async (url) => {
     // 실제 API로 가져올 때
-    // const data = await fetchHotelsCom(
-    //   `https://hotels-com-provider.p.rapidapi.com/v1/hotels/search?checkin_date=${checkIn}&checkout_date=${checkOut}&sort_order=STAR_RATING_HIGHEST_FIRST&destination_id=${destinationId}&adults_number=${adultsNumber}&locale=ko_KR&currency=KRW`
-    // );
+    const data = await fetchHotelsCom(url);
     //     console.log(data)
 
     const {
       searchResults: { results },
       filters,
-    } = hotelsData;
+    } = data;
 
     return { results, filters };
   };

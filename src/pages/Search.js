@@ -19,7 +19,6 @@ const Search = () => {
   const [destinationId, setDestinationId] = useState(0); //
 
   const navigate = useNavigate();
-
   // input별 변경값 반영
   const handleChange = (e) => {
     const { name, value } = e.target; // 키 입력시 해당 input의 이름과 값을 가져온다.
@@ -66,8 +65,10 @@ const Search = () => {
   };
 
   const getCaptions = async (query) => {
-    // const data = await fetchHotelsCom(`https://hotels-com-provider.p.rapidapi.com/v1/destinations/search?query=${query}&currency=KRW&locale=ko_KR`)
-    // return data
+    // const data = await fetchHotelsCom(
+    //   `https://hotels-com-provider.p.rapidapi.com/v1/destinations/search?query=${query}&currency=KRW&locale=ko_KR`
+    // );
+    // return data;
   };
 
   const setCaption = (e) => {
