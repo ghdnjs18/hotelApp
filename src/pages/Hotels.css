@@ -1,9 +1,21 @@
 .Hotels-container {
-  width: 80%;
+  width: 95%;
   margin: 0 auto;
-}
 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+.Hotels-filtered {
+  width: 200px;
+  margin-right: 10px;
+  /* border: 1px solid red; */
+}
+.Hotels-searched {
+  flex: 1;
+  /* border: 1px solid blue; */
+}
 #map {
-  /* 지도 크기 */
   height: 400px;
 }
