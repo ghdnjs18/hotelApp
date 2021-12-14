@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./AccordionItem.css";
+
 const AccordionItem = ({ children }) => {
   return (
     <div className="AccordionItem-container">
