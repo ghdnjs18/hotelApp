@@ -111,6 +111,15 @@ const Hotels = () => {
     }
   };
 
+  const getLocation = (hotel) => {
+    const { name, address, coordinate } = handleNullObj(hotel);
+    const { streetAddress, locality, countryName } = handleNullObj(address);
+    const { lat, lon } = handleNullObj(coordinate);
+    const msg = `${name}<br>${streetAddress}, ${locality}, ${countryName}`;
+
+    return { lat, lon, msg };
+  };
+
   return (
     <div className="Hotels-container">
       <div className="Hotels-filtered">
@@ -120,11 +129,7 @@ const Hotels = () => {
         <div id="map"></div>
         {!isArrayNull(hotels) &&
           hotels.map((hotel) => {
-            const { name, address, coordinate } = handleNullObj(hotel);
-            const { streetAddress, locality, countryName } =
-              handleNullObj(address);
-            const { lat, lon } = handleNullObj(coordinate);
-            const msg = `${name}<br>${streetAddress}, ${locality}, ${countryName}`;
+            const { lat, lon, msg } = getLocation(hotel);
             displayLocation(lat, lon, msg);
             return <HotelItem hotel={hotel} key={hotel.id} />;
           })}
