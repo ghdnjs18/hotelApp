@@ -4,7 +4,7 @@ import "./Hotels.css";
 
 import { fetchHotelsCom, isArrayNull, handleNullObj } from "lib";
 import hotelsData from "../hotelsData";
-import { HotelItem } from "components";
+import { HotelItem, Accordion } from "components";
 
 const Hotels = () => {
   const location = useLocation();
@@ -14,10 +14,12 @@ const Hotels = () => {
 
   const [hotels, setHotels] = useState([]);
   const [mapObj, setMapObj] = useState(null); // 지도 객체를 저장할 state값
+  const [filters, setFilters] = useState(null);
 
   useEffect(async () => {
-    const hotelsList = await getHotels();
-    setHotels(hotelsList);
+    const { results, filters } = await getHotels();
+    setHotels(results);
+    setFilters(filters);
 
     const m = L.map("map");
     setMapObj(m);
@@ -32,12 +34,13 @@ const Hotels = () => {
 
     const {
       searchResults: { results },
+      filters,
     } = hotelsData;
 
-    return results;
+    return { results, filters };
   };
   const displayLocation = (lat, lon, msg) => {
-    console.log("지도 객체", mapObj);
+    // console.log("지도 객체", mapObj);
 
     if (mapObj) {
       const map = mapObj.setView([lat, lon], 13);
@@ -52,19 +55,75 @@ const Hotels = () => {
       L.marker([lat, lon]).addTo(map).bindPopup(msg).openPopup();
     }
   };
+
+  const displayFilter = () => {
+    console.log("display filter ...!!");
+  };
+
+  const AccordionList = () => {
+    console.log(filters);
+
+    if (filters) {
+      const {
+        neighbourhood,
+        landmarks,
+        accommodationType,
+        facilities,
+        themesAndTypes,
+        accessibility,
+      } = handleNullObj(filters);
+      const filterTypes = [
+        {
+          items: handleNullObj(neighbourhood.items),
+          title: "위치 및 주변 지역",
+        },
+        { items: handleNullObj(landmarks.items), title: "랜드마크" },
+        {
+          items: handleNullObj(accommodationType.items),
+          title: "숙박시설 유형",
+        },
+        { items: handleNullObj(facilities.items), title: "시설" },
+        { items: handleNullObj(themesAndTypes.items), title: "테마/유형" },
+        { items: handleNullObj(accessibility.items), title: "장애의 편의시설" },
+      ];
+      return (
+        <div>
+          {isArrayNull(filterTypes) &&
+            filterTypes.map((filterType, id) => {
+              return (
+                <Accordion
+                  key={id}
+                  title={filterType.title}
+                  items={filterType.items}
+                  displayFilter={displayFilter}
+                />
+              );
+            })}
+        </div>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   return (
     <div className="Hotels-container">
-      <div id="map"></div>
-      {!isArrayNull(hotels) &&
-        hotels.map((hotel) => {
-          const { name, address, coordinate } = handleNullObj(hotel);
-          const { streetAddress, locality, countryName } =
-            handleNullObj(address);
-          const { lat, lon } = handleNullObj(coordinate);
-          const msg = `${name}<br>${streetAddress}, ${locality}, ${countryName}`;
-          displayLocation(lat, lon, msg);
-          return <HotelItem hotel={hotel} key={hotel.id} />;
-        })}
+      <div className="Hotels-filtered">
+        <AccordionList />
+      </div>
+      <div className="Hotels-searched">
+        <div id="map"></div>
+        {!isArrayNull(hotels) &&
+          hotels.map((hotel) => {
+            const { name, address, coordinate } = handleNullObj(hotel);
+            const { streetAddress, locality, countryName } =
+              handleNullObj(address);
+            const { lat, lon } = handleNullObj(coordinate);
+            const msg = `${name}<br>${streetAddress}, ${locality}, ${countryName}`;
+            displayLocation(lat, lon, msg);
+            return <HotelItem hotel={hotel} key={hotel.id} />;
+          })}
+      </div>
     </div>
   );
 };
