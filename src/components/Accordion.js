@@ -1,5 +1,6 @@
 import React from "react";
 import { isArrayNull } from "lib";
+import { AccordionItem } from "components";
 
 import "Accordion.css";
 
