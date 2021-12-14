@@ -4,7 +4,13 @@ import { AccordionItem } from "components";
 
 import "./Accordion.css";
 
-const Accordion = ({ title, items, displayFilter }) => {
+const Accordion = ({
+  title,
+  items,
+  displayFilter,
+  searchHotelsWithFilter,
+  querystring,
+}) => {
   // console.log(items);
   return (
     <div className="Accordion-container">
@@ -15,7 +21,16 @@ const Accordion = ({ title, items, displayFilter }) => {
       <div className="Accordion-items">
         {!isArrayNull(items) &&
           items.map((item) => {
-            return <AccordionItem key={item.value}>{item.label}</AccordionItem>;
+            return (
+              <AccordionItem
+                key={item.value}
+                value={item.value}
+                searchHotelsWithFilter={searchHotelsWithFilter}
+                querystring={querystring}
+              >
+                {item.label}
+              </AccordionItem>
+            );
           })}
       </div>
     </div>

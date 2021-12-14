@@ -4,17 +4,21 @@ import "./Hotels.css";
 
 import { fetchHotelsCom, isArrayNull, handleNullObj } from "lib";
 import hotelsData from "../hotelsData";
-import { HotelItem, Accordion } from "components";
+import { HotelItem, Accordion, Button } from "components";
 
 const Hotels = () => {
+  let query = {}; // hotels.com 서버로 전달될 url
+
   const location = useLocation();
   const { destinationId, checkIn, checkOut, adultsNumber } =
     location.state || {};
   // console.log(destinationId, checkIn, checkOut, adultsNumber);
 
+  const BASE_URL = `https://hotels-com-provider.p.rapidapi.com/v1/hotels/search?checkin_date=${checkIn}&checkout_date=${checkOut}&sort_order=STAR_RATING_HIGHEST_FIRST&destination_id=${destinationId}&adults_number=${adultsNumber}&locale=ko_KR&currency=KRW`;
   const [hotels, setHotels] = useState([]);
   const [mapObj, setMapObj] = useState(null); // 지도 객체를 저장할 state값
   const [filters, setFilters] = useState(null);
+  const [queryURL, setQueryURL] = useState(null);
 
   useEffect(async () => {
     const { results, filters } = await getHotels();
@@ -25,7 +29,22 @@ const Hotels = () => {
     setMapObj(m);
   }, []);
 
-  const getHotels = async () => {
+  // 사용자가 호텔 검색 버튼 클릭할때 마다 실행
+  useEffect(async () => {
+    let url = BASE_URL;
+
+    console.log(url);
+    // queryURL[prop] : [23, 30, 2] - 필터 조건들이 들어가 있는 배열
+    for (let prop in queryURL) {
+      const queryvalue = encodeURIComponent(queryURL[prop].join(","));
+      url += `&${prop}=${queryvalue}`;
+      console.log(prop, queryvalue);
+    }
+    const { results } = await getHotels(url);
+    setHotels(results);
+  }, [queryURL]);
+
+  const getHotels = async (url) => {
     // 실제 API로 가져올 때
     // const data = await fetchHotelsCom(
     //   `https://hotels-com-provider.p.rapidapi.com/v1/hotels/search?checkin_date=${checkIn}&checkout_date=${checkOut}&sort_order=STAR_RATING_HIGHEST_FIRST&destination_id=${destinationId}&adults_number=${adultsNumber}&locale=ko_KR&currency=KRW`
@@ -64,6 +83,18 @@ const Hotels = () => {
     items.classList.toggle("expand-filter");
   };
 
+  // 사용자가 필터 클릭할 때 실행
+  const searchHotelsWithFilter = (querystring, value) => {
+    // querystring이 문자열이기 떄문에 배열로 감싸서 적어주어야 된다.
+    // query[querystring] : [30, 2, 13, 4] => 30 => 게스트하우스 2: 호텔
+    query = { ...query, [querystring]: [...(query[querystring] || []), value] };
+    // console.log(query);
+  };
+
+  const searchHotels = () => {
+    setQueryURL(query);
+  };
+
   const AccordionList = () => {
     // console.log(filters);
 
@@ -81,15 +112,33 @@ const Hotels = () => {
         {
           items: handleNullObj(neighbourhood.items),
           title: "위치 및 주변 지역",
+          querystring: "landmark_id",
         },
-        { items: handleNullObj(landmarks.items), title: "랜드마크" },
+        {
+          items: handleNullObj(landmarks.items),
+          title: "랜드마크",
+          querystring: "landmark_id",
+        },
         {
           items: handleNullObj(accommodationType.items),
           title: "숙박시설 유형",
+          querystring: "accommodation_ids",
         },
-        { items: handleNullObj(facilities.items), title: "시설" },
-        { items: handleNullObj(themesAndTypes.items), title: "테마/유형" },
-        { items: handleNullObj(accessibility.items), title: "장애의 편의시설" },
+        {
+          items: handleNullObj(facilities.items),
+          title: "시설",
+          querystring: "amenity_ids",
+        },
+        {
+          items: handleNullObj(themesAndTypes.items),
+          title: "테마/유형",
+          querystring: "theme_ids",
+        },
+        {
+          items: handleNullObj(accessibility.items),
+          title: "장애의 편의시설",
+          querystring: "amenity_ids",
+        },
       ];
       return (
         <div>
@@ -101,6 +150,8 @@ const Hotels = () => {
                   title={filterType.title}
                   items={filterType.items}
                   displayFilter={displayFilter}
+                  querystring={filterType.querystring}
+                  searchHotelsWithFilter={searchHotelsWithFilter}
                 />
               );
             })}
@@ -124,6 +175,7 @@ const Hotels = () => {
     <div className="Hotels-container">
       <div className="Hotels-filtered">
         <AccordionList />
+        <Button handleClick={searchHotels}>호텔 검색</Button>
       </div>
       <div className="Hotels-searched">
         <div id="map"></div>
