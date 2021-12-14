@@ -56,14 +56,19 @@ const Hotels = () => {
     }
   };
 
-  const displayFilter = () => {
-    console.log("display filter ...!!");
+  const displayFilter = (e) => {
+    const target = e.target.closest(".Accordion-container"); // 필터 카테고리 요소
+    const arrow = target.querySelector(".Accordion-arrow");
+    const items = target.querySelector(".Accordion-items");
+    arrow.classList.toggle("change-arrow");
+    items.classList.toggle("expand-filter");
   };
 
   const AccordionList = () => {
-    console.log(filters);
+    // console.log(filters);
 
     if (filters) {
+      // console.log(filters);
       const {
         neighbourhood,
         landmarks,
@@ -88,7 +93,7 @@ const Hotels = () => {
       ];
       return (
         <div>
-          {isArrayNull(filterTypes) &&
+          {!isArrayNull(filterTypes) &&
             filterTypes.map((filterType, id) => {
               return (
                 <Accordion

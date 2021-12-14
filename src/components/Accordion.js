@@ -2,9 +2,10 @@ import React from "react";
 import { isArrayNull } from "lib";
 import { AccordionItem } from "components";
 
-import "Accordion.css";
+import "./Accordion.css";
 
 const Accordion = ({ title, items, displayFilter }) => {
+  // console.log(items);
   return (
     <div className="Accordion-container">
       <div className="Accordion-menu" onClick={displayFilter}>
@@ -12,7 +13,7 @@ const Accordion = ({ title, items, displayFilter }) => {
         <div className="Accordion-title">{title}</div>
       </div>
       <div className="Accordion-items">
-        {isArrayNull(items) &&
+        {!isArrayNull(items) &&
           items.map((item) => {
             return <AccordionItem key={item.value}>{item.label}</AccordionItem>;
           })}
