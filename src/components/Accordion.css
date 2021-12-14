@@ -1,18 +1,34 @@
-.AccordionItem-container {
+.Accordion-container {
+  border-top: 1px solid lightgray;
+}
+.Accordion-menu {
+  cursor: pointer;
   display: flex;
   justify-content: flex-start;
-
-  margin-top: 15px;
-  margin-bottom: 15px;
+  align-items: center;
   user-select: none;
 }
-.AccordionItem-checker {
+.Accordion-arrow {
+  width: 20px;
+  height: 20px;
   margin-right: 10px;
+  background-image: url("../assets/images/down-arrow.png");
+  background-size: cover;
 }
-.AccordionItem-checker input {
-  width: 18px;
-  height: 18px;
+.change-arrow {
+  background-image: url("../assets/images/up-arrow.png");
 }
-.AccordionItem-filter {
-  color: #333333;
+
+.Accordion-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #1a1c1b;
+}
+.Accordion-items {
+  display: none;
+}
+.expand-filter {
+  display: block;
 }
