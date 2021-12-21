@@ -4,7 +4,7 @@ import "./Hotels.css";
 
 import { fetchHotelsCom, isArrayNull, handleNullObj } from "lib";
 import hotelsData from "../hotelsData";
-import { HotelItem, Accordion, Button } from "components";
+import { HotelItem, Accordion, Button, StarRatingFilter } from "components";
 
 const Hotels = () => {
   let query = {}; // hotels.com 서버로 전달될 url
@@ -93,7 +93,7 @@ const Hotels = () => {
     setQueryURL(query);
   };
 
-  const AccordionList = () => {
+  const FilterList = () => {
     // console.log(filters);
 
     if (filters) {
@@ -105,55 +105,69 @@ const Hotels = () => {
         facilities,
         themesAndTypes,
         accessibility,
+        starRating,
       } = handleNullObj(filters);
+      const starRatingType = {
+        items: handleNullObj(starRating).items,
+        title: "숙박 시설 등급",
+        querystring: "star_rating_ids",
+      };
       const filterTypes = [
         {
-          items: handleNullObj(neighbourhood.items),
+          items: handleNullObj(neighbourhood).items,
           title: "위치 및 주변 지역",
           querystring: "landmark_id",
         },
         {
-          items: handleNullObj(landmarks.items),
+          items: handleNullObj(landmarks).items,
           title: "랜드마크",
           querystring: "landmark_id",
         },
         {
-          items: handleNullObj(accommodationType.items),
+          items: handleNullObj(accommodationType).items,
           title: "숙박시설 유형",
           querystring: "accommodation_ids",
         },
         {
-          items: handleNullObj(facilities.items),
+          items: handleNullObj(facilities).items,
           title: "시설",
           querystring: "amenity_ids",
         },
         {
-          items: handleNullObj(themesAndTypes.items),
+          items: handleNullObj(themesAndTypes).items,
           title: "테마/유형",
           querystring: "theme_ids",
         },
         {
-          items: handleNullObj(accessibility.items),
+          items: handleNullObj(accessibility).items,
           title: "장애의 편의시설",
           querystring: "amenity_ids",
         },
       ];
       return (
-        <div>
-          {!isArrayNull(filterTypes) &&
-            filterTypes.map((filterType, id) => {
-              return (
-                <Accordion
-                  key={id}
-                  title={filterType.title}
-                  items={filterType.items}
-                  displayFilter={displayFilter}
-                  querystring={filterType.querystring}
-                  searchHotelsWithFilter={searchHotelsWithFilter}
-                />
-              );
-            })}
-        </div>
+        <>
+          <StarRatingFilter
+            title={starRatingType.title}
+            items={starRatingType.items}
+            querystring={starRatingType.querystring}
+            searchHotelsWithFilter={searchHotelsWithFilter}
+          />
+          <div>
+            {!isArrayNull(filterTypes) &&
+              filterTypes.map((filterType, id) => {
+                return (
+                  <Accordion
+                    key={id}
+                    title={filterType.title}
+                    items={filterType.items}
+                    displayFilter={displayFilter}
+                    querystring={filterType.querystring}
+                    searchHotelsWithFilter={searchHotelsWithFilter}
+                  />
+                );
+              })}
+          </div>
+        </>
       );
     } else {
       return <></>;
@@ -172,7 +186,7 @@ const Hotels = () => {
   return (
     <div className="Hotels-container">
       <div className="Hotels-filtered">
-        <AccordionList />
+        <FilterList />
         <Button handleClick={searchHotels}>호텔 검색</Button>
       </div>
       <div className="Hotels-searched">
