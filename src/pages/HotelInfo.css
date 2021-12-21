@@ -1,0 +1,100 @@
+.HotelInfo-container {
+  width: 60%;
+  margin: 0 auto;
+  /* border: 1px solid red; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.HotelInfo-header {
+  width: 100%;
+  margin-top: 50px;
+  /* border: 1px solid orange; */
+
+  display: flex;
+  justify-content: center;
+}
+.HotelInfo-hotel-name {
+  flex: 1;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.HotelInfo-hotel-name span {
+  font-size: 0.9rem;
+  color: red;
+}
+.HotelInfo-hotel-price {
+  width: 200px;
+  /* border: 1px solid green; */
+  text-align: right;
+}
+.HotelInfo-price-per-oneday {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.HotelInfo-price-per-oneday span {
+  font-size: 0.8rem;
+  text-decoration: line-through;
+}
+.HotelInfo-price-per-oneday-title {
+  font-size: 0.8rem;
+  color: #525252;
+}
+.HotelInfo-price-total {
+  font-weight: bold;
+  margin-top: 10px;
+}
+.HotelInfo-price-summary {
+  font-size: 0.8rem;
+  color: #525252;
+}
+
+.HotelInfo-photos {
+  width: 100%;
+  margin-top: 100px;
+  /* border: 1px solid blue; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.HotelInfo-main-photo {
+  width: 100%;
+  height: 40vh;
+  border-radius: 5px;
+  /* border: 1px solid red; */
+  overflow: hidden;
+}
+.HotelInfo-main-photo img {
+  width: 100%;
+  height: 100%;
+}
+.HotelInfo-sub-photos {
+  width: 100%;
+  /* border: 1px solid green; */
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.HotelInfo-sub-photo {
+  flex: 1;
+  height: 10vh;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 2px;
+}
+.HotelInfo-sub-photo:hover {
+  opacity: 0.8;
+  transform: scale(1.01);
+}
+.HotelInfo-sub-photo img {
+  width: 100%;
+  height: 100%;
+}

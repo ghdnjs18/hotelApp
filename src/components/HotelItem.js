@@ -6,6 +6,7 @@ import "./HotelItem.css";
 
 const HotelItem = ({ hotel }) => {
   const {
+    id,
     name,
     optimizedThumbUrls,
     address,
@@ -24,10 +25,27 @@ const HotelItem = ({ hotel }) => {
     handleNullObj(price);
   const totalPrice = totalPricePerStay ? totalPricePerStay.split(/[<>()]/) : [];
 
+  const hotelInfo = {
+    id,
+    name,
+    starRating,
+    rating,
+    badgeText,
+    old,
+    current,
+    info,
+    totalPrice,
+    summary,
+  };
+
   return (
     <div className="HotelItem-container">
       {/* 호텔 썸네일 */}
-      <Link className="HotelItem-thumbnail" to="hotelInfo">
+      <Link
+        className="HotelItem-thumbnail"
+        to="/hotelInfo"
+        state={{ hotelInfo }}
+      >
         <img className="HotelItem-address" src={srpDesktop} alt={name} />
       </Link>
       {/* 호텔 정보 */}
