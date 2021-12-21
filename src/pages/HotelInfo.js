@@ -3,6 +3,8 @@ import "./HotelInfo.css";
 import { useLocation } from "react-router-dom";
 import { fetchHotelsCom, handleNullObj, isArrayNull } from "lib";
 import hotelPhotos from "../hotelPhotos";
+import hotelReviews from "../hotelReviews";
+import { Review } from "components";
 
 const HotelInfo = () => {
   const location = useLocation();
@@ -23,14 +25,19 @@ const HotelInfo = () => {
 
   const [photos, setPhotos] = useState([]);
   const [idx, setIdx] = useState(0);
+  const [reviews, setReviews] = useState([]);
 
-  console.log(photos);
+  // console.log(photos);
   useEffect(async () => {
     const photos = await getHotelPhotos(
       `https://hotels-com-provider.p.rapidapi.com/v1/hotels/photos?hotel_id=${id}`
     );
+    const reviews = await getReviews(
+      `https://hotels-com-provider.p.rapidapi.com/v1/hotels/reviews?locale=ko_KR&hotel_id=${id}`
+    );
     setPhotos(photos);
-  });
+    setReviews(reviews);
+  }, []);
 
   const getHotelPhotos = async (url) => {
     // const data = await fetchHotelsCom(url);
@@ -43,7 +50,17 @@ const HotelInfo = () => {
     setIdx(idx);
   };
 
-  //
+  // 사용자 리뷰 서버에서 조회하기
+  const getReviews = async (url) => {
+    // const data = await fetchHotelsCom(url);
+    // return data
+
+    const { groupReview } = handleNullObj(hotelReviews);
+    const { reviews } = !isArrayNull(groupReview)
+      ? handleNullObj(groupReview[0])
+      : [];
+    return reviews;
+  };
 
   return (
     <div className="HotelInfo-container">
@@ -88,6 +105,25 @@ const HotelInfo = () => {
                 );
               }
             })}
+        </div>
+        {/* 호텔 리뷰 보여주기 */}
+        <div className="HotelInfo-reviews">
+          <div className="HotelInfo-total-review">
+            <div
+              className={`HotelInfo-rating-badge ${
+                parseInt(rating) < 8 ? "HotelInfo-rating-badge-gray" : ""
+              }`}
+            >
+              {rating}
+            </div>
+            <div className="HotelInfo-rating-badgeText">{badgeText}</div>
+          </div>
+          <div className="HotelInfo-user-reviews">
+            {!isArrayNull(reviews) &&
+              reviews.map((review, idx) => {
+                return <Review key={idx} review={review} />;
+              })}
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,50 @@
+.Review-container {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Review-rating {
+  width: 100%;
+  margin-bottom: 15px;
+  /* border: 1px solid red; */
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.Review-badge {
+  background-color: #218242;
+  color: white;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 2px;
+  border-radius: 2px;
+}
+.Review-badge-gray {
+  background-color: #a9a9a9;
+  color: black;
+}
+.Review-badgeText {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.Review-text {
+  width: 100%;
+  margin-bottom: 15px;
+  /* border: 1px solid blue; */
+  color: #333333;
+}
+.Review-text-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.Review-user {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
