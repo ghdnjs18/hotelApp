@@ -23,13 +23,15 @@ const HotelInfo = () => {
     summary,
   } = handleNullObj(hotelInfo);
   const { checkIn, checkOut, adultsNumber } = handleNullObj(bookingInfo);
-  //   console.log(hotelInfo);
 
   const [photos, setPhotos] = useState([]);
   const [idx, setIdx] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [details, setDetails] = useState(null);
 
+  // console.log("p" + photos);
+  // console.log("r" + reviews);
+  // console.log("d" + details);
   // console.log(photos);
   useEffect(async () => {
     const photos = await getHotelPhotos(
@@ -64,14 +66,14 @@ const HotelInfo = () => {
   const getReviews = async (url) => {
     // API 사용
     const data = await fetchHotelsCom(url);
-    return data;
 
     // 더미 데이터로 테스트
     // const { groupReview } = handleNullObj(hotelReviews);
-    // const { reviews } = !isArrayNull(groupReview)
-    //   ? handleNullObj(groupReview[0])
-    //   : [];
-    // return reviews;
+    const { groupReview } = handleNullObj(data);
+    const { reviews } = !isArrayNull(groupReview)
+      ? handleNullObj(groupReview[0])
+      : [];
+    return reviews;
   };
 
   const getDetailsOfHotel = async (url) => {

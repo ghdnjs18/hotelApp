@@ -30,7 +30,7 @@ const Room = ({ room }) => {
   };
 
   const RatePlan = ({ ratePlan }) => {
-    console.log(ratePlan);
+    // console.log(ratePlan);
     const { cancellations, features, welcomeRewards, price } =
       handleNullObj(ratePlan);
     const { current, info, totalPricePerStay } = handleNullObj(price);
