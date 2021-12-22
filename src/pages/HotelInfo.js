@@ -4,11 +4,12 @@ import { useLocation } from "react-router-dom";
 import { fetchHotelsCom, handleNullObj, isArrayNull } from "lib";
 import hotelPhotos from "../hotelPhotos";
 import hotelReviews from "../hotelReviews";
-import { Review } from "components";
+import hotelDetail from "../hotelDetail";
+import { Review, Room } from "components";
 
 const HotelInfo = () => {
   const location = useLocation();
-  const { hotelInfo } = handleNullObj(location.state);
+  const { hotelInfo, bookingInfo } = handleNullObj(location.state);
   const {
     id,
     name,
@@ -21,11 +22,13 @@ const HotelInfo = () => {
     totalPrice,
     summary,
   } = handleNullObj(hotelInfo);
+  const { checkIn, checkOut, adultsNumber } = handleNullObj(bookingInfo);
   //   console.log(hotelInfo);
 
   const [photos, setPhotos] = useState([]);
   const [idx, setIdx] = useState(0);
   const [reviews, setReviews] = useState([]);
+  const [details, setDetails] = useState(null);
 
   // console.log(photos);
   useEffect(async () => {
@@ -35,15 +38,22 @@ const HotelInfo = () => {
     const reviews = await getReviews(
       `https://hotels-com-provider.p.rapidapi.com/v1/hotels/reviews?locale=ko_KR&hotel_id=${id}`
     );
+    const details = await getDetailsOfHotel(
+      `https://hotels-com-provider.p.rapidapi.com/v1/hotels/booking-details?adults_number=${adultsNumber}&checkin_date=${checkIn}&locale=ko_KR&currency=KRW&hotel_id=${id}&checkout_date=${checkOut}`
+    );
+
     setPhotos(photos);
     setReviews(reviews);
+    setDetails(details);
   }, []);
 
   const getHotelPhotos = async (url) => {
-    // const data = await fetchHotelsCom(url);
-    // return data
+    // API 사용
+    const data = await fetchHotelsCom(url);
+    return data;
 
-    return hotelPhotos;
+    // 더미 데이터로 테스트
+    // return hotelPhotos;
   };
 
   const changePhoto = (idx) => {
@@ -52,14 +62,43 @@ const HotelInfo = () => {
 
   // 사용자 리뷰 서버에서 조회하기
   const getReviews = async (url) => {
-    // const data = await fetchHotelsCom(url);
-    // return data
+    // API 사용
+    const data = await fetchHotelsCom(url);
+    return data;
 
-    const { groupReview } = handleNullObj(hotelReviews);
-    const { reviews } = !isArrayNull(groupReview)
-      ? handleNullObj(groupReview[0])
-      : [];
-    return reviews;
+    // 더미 데이터로 테스트
+    // const { groupReview } = handleNullObj(hotelReviews);
+    // const { reviews } = !isArrayNull(groupReview)
+    //   ? handleNullObj(groupReview[0])
+    //   : [];
+    // return reviews;
+  };
+
+  const getDetailsOfHotel = async (url) => {
+    // API 사용
+    const data = await fetchHotelsCom(url);
+    return data;
+
+    // 더미 데이터로 테스트
+    // return hotelDetail;
+  };
+
+  const Rooms = () => {
+    if (details) {
+      const { roomsAndRates } = handleNullObj(details);
+      const { rooms } = handleNullObj(roomsAndRates);
+
+      return (
+        <>
+          {!isArrayNull(rooms) &&
+            rooms.map((room, id) => {
+              return <Room key={id} room={room} />;
+            })}
+        </>
+      );
+    } else {
+      return <></>;
+    }
   };
 
   return (
@@ -106,6 +145,8 @@ const HotelInfo = () => {
               }
             })}
         </div>
+        {/* 호텔룸 정보 보여주기 */}
+        <Rooms />
         {/* 호텔 리뷰 보여주기 */}
         <div className="HotelInfo-reviews">
           <div className="HotelInfo-total-review">

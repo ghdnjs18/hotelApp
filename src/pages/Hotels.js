@@ -195,7 +195,14 @@ const Hotels = () => {
           hotels.map((hotel) => {
             const { lat, lon, msg } = getLocation(hotel);
             displayLocation(lat, lon, msg);
-            return <HotelItem hotel={hotel} key={hotel.id} />;
+            const bookingInfo = { checkIn, checkOut, adultsNumber };
+            return (
+              <HotelItem
+                hotel={hotel}
+                key={hotel.id}
+                bookingInfo={bookingInfo}
+              />
+            );
           })}
       </div>
     </div>

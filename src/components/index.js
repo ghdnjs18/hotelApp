@@ -6,3 +6,4 @@ export { default as Accordion } from "./Accordion";
 export { default as AccordionItem } from "./AccordionItem";
 export { default as StarRatingFilter } from "./StarRatingFilter";
 export { default as Review } from "./Review";
+export { default as Room } from "./Room";

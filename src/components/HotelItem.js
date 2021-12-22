@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { isArrayNull, handleNullObj } from "../lib";
 import "./HotelItem.css";
 
-const HotelItem = ({ hotel }) => {
+const HotelItem = ({ hotel, bookingInfo }) => {
   const {
     id,
     name,
@@ -37,14 +37,13 @@ const HotelItem = ({ hotel }) => {
     totalPrice,
     summary,
   };
-
   return (
     <div className="HotelItem-container">
       {/* 호텔 썸네일 */}
       <Link
         className="HotelItem-thumbnail"
         to="/hotelInfo"
-        state={{ hotelInfo }}
+        state={{ hotelInfo, bookingInfo }}
       >
         <img className="HotelItem-address" src={srpDesktop} alt={name} />
       </Link>

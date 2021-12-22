@@ -3,7 +3,7 @@ import { handleNullObj } from "lib";
 import "./Review.css";
 
 const Review = ({ review }) => {
-  console.log(review);
+  // console.log(review);
   const {
     formattedRating,
     qualitativeBadgeText,
